@@ -45,6 +45,8 @@ jobs:
         run: uv run --frozen --python ${{ matrix.python }} python -m set_lcm.recording init work/tank-recording
       - name: Build package
         run: uv build --python ${{ matrix.python }}
+      - name: Run unit gate
+        run: uv run --frozen --python ${{ matrix.python }} --dev pytest -q -o addopts= -m "not slow and not extended"
       - name: Run default suite
         run: uv run --frozen --python ${{ matrix.python }} --dev pytest -q
 
@@ -57,9 +59,4 @@ jobs:
       - uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e # v6.8.0
         with:
           version: '0.10.10'
-      # -rs prints the skip reasons: this job has no DAF checkout, so the export
-      # reproduction check skips, and a silent skip in a job named full-reproduction
-      # would read as a pass. The two tests that do run take about 33 minutes measured;
-      # the skipped one takes about 85 on its own, so giving this job a DAF checkout
-      # means raising timeout-minutes above that first.
       - run: uv run --frozen --python 3.13 --dev pytest -q -rs -m slow

@@ -25,6 +25,9 @@ uv run --python 3.13 --extra jspt --dev pytest -q tests/test_jspt_chart_contract
 Week-2, after that extra is green: `AffineCoordinates` becomes a thin
 adapter over `sensitivity.AffineCoordinates` / `push_covariance` /
 `transform_plant`. Keep `GaussianState`, masks, Joseph, and declaration.
-Delete the local `T F T^{-1}` and `T P T^T` algebra only then.
 
-GAT is later. Lyapunov and geodesic repos take this same SHA from commit one.
+**Same pull request, not a follow-up:** delete the local `T F T^{-1}` and
+`T P T^T` algebra when the adapter lands. Leaving both copies will drift.
+
+CSE / Lyapunov / geodesic repos take this same SHA from commit one.
+Do not grow a second IFC or OpenUSD stack here.
