@@ -1,22 +1,30 @@
 # JSPT pin
 
-JSPT owns the chart and first-order covariance laws. This repository wraps
-`GaussianState` and must not fork `T P Tᵀ` / `T F T⁻¹`.
+A2-A5 live in JSPT. This repository wraps types; it does not own the law.
 
-Pinned SHA (laws, not floating main):
-
-`d570b2cf6553c80217f78a2ada62b5dc456c7469`
-
-https://github.com/giasonpooni/Jacobian-Sensitivity-Propagation-Testbed/commit/d570b2cf6553c80217f78a2ada62b5dc456c7469
-
-Optional extra when the adapter is wired:
+Pinned SHA: `c0a01c1a27f10b099ac200c7e83b0f03187ee4d2`
 
 ```toml
+[project.optional-dependencies]
 jspt = [
-  "jacobian-sensitivity-propagation-testbed @ git+https://github.com/giasonpooni/Jacobian-Sensitivity-Propagation-Testbed.git@d570b2cf6553c80217f78a2ada62b5dc456c7469",
+  "jacobian-sensitivity-propagation-testbed @ git+https://github.com/giasonpooni/Jacobian-Sensitivity-Propagation-Testbed.git@c0a01c1a27f10b099ac200c7e83b0f03187ee4d2",
 ]
 ```
 
-Do not copy `coordinates.py` from JSPT. Bump the SHA only after
-`tests/test_jspt_chart_contract.py` and JSPT `tests/contracts/test_chart_law.py`
-both pass on the same two-tank fixture.
+Bumping the pin is a reviewed act: run `tests/test_coordinates.py` and
+`tests/test_jspt_chart_contract.py`, then move the SHA. Do not copy
+`coordinates.py` from JSPT.
+
+Default CI stays numpy-only (`uv run --frozen`) so a JSPT axiom change
+cannot silently rewrite NOAA reports. Install the extra to compare:
+
+```bash
+uv run --python 3.13 --extra jspt --dev pytest -q tests/test_jspt_chart_contract.py tests/test_jspt_adapter.py
+```
+
+Week-2, after that extra is green: `AffineCoordinates` becomes a thin
+adapter over `sensitivity.AffineCoordinates` / `push_covariance` /
+`transform_plant`. Keep `GaussianState`, masks, Joseph, and declaration.
+Delete the local `T F T^{-1}` and `T P T^T` algebra only then.
+
+GAT is later. Lyapunov and geodesic repos take this same SHA from commit one.

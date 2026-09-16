@@ -12,3 +12,5 @@ Maintain FSRT as one project on `main`.
   update reports through their generators when their results change.
 - Keep the README focused on delivered functionality. Mark research extensions as planned
   until implemented and validated. Development remains focused on fluid systems.
+- A2-A5 are owned by JSPT. Pin a SHA (see docs/JSPT_PIN.md). Do not copy JSPT
+  coordinates into this tree. Do not put tank ids or declaration text into JSPT.
