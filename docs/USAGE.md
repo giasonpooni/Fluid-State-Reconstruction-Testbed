@@ -7,6 +7,8 @@ reconciliation against a declared balance, not visual reconstruction of a fluid 
 Start with the small example, then choose whether you need to check raw fluid measurements, reconcile an existing
 estimate or replay a sequence of measurements through an estimator.
 
+Clone size, test tiers, and naming: [`USAGE_NOTES.md`](USAGE_NOTES.md).
+
 ## Install and run the example
 
 Install [uv](https://docs.astral.sh/uv/getting-started/installation/), clone the repository,
@@ -46,34 +48,25 @@ The remaining residual in the first case is intentional: the total itself has un
 the measurements. The second case illustrates a policy that holds reconciliation when the
 unprojected estimate exceeds the reference threshold.
 
-The rest of this guide is unchanged: raw storage/flow checks, the invariant layer,
-camera/gauge comparison, recording kits, reconcile/replay APIs, site declarations, and
-report-regeneration commands.
-
 ## Tests
 
-Tests are split into three tiers:
-
 ```bash
-# Unit / contract gate — no experiment regeneration
 uv run --frozen --python 3.13 --dev pytest -q -o addopts= -m "not slow and not extended"
-
-# Default suite — includes report/contract tests; excludes only -m slow
 uv run --frozen --python 3.13 --dev pytest -q
-
-# Slow — full simulation grid, calibration and sweeps
 uv run --frozen --python 3.13 --dev pytest -q -m slow
 ```
 
-The default suite includes small experiments and regeneration of the real-data reports.
-The slow tests additionally regenerate the full simulation grid, calibration and sweeps.
+## Full API guide
 
-Some small-matrix workloads are slower when the numerical library starts many worker threads.
-CI sets `OPENBLAS_NUM_THREADS=1` and `OMP_NUM_THREADS=1`; use the same process environment
-when reproducing its timings. Runtime depends on the machine and is not a performance claim.
+The camera, recording, reconcile, replay, declaration, and report-regeneration
+sections last lived in full at commit `390b12d`:
 
-Two DAF validation tests require a separate upstream checkout specified by `DAF_ROOT`.
-They are skipped when it is absent. See [data provenance](../data/daf/PROVENANCE.md).
+https://github.com/giasonpooni/Fluid-State-Reconstruction-Testbed/blob/390b12d13fcc81f5c0dd20d3a4dc1d47b8e8c714/docs/USAGE.md
 
-For the full command list and API tables, keep the previous USAGE sections on `main`
-before this edit or read the module docstrings under `src/set_lcm/`.
+Restore them onto `main` with:
+
+```bash
+git checkout 390b12d -- docs/USAGE.md
+```
+
+then keep the naming / clone-size / three-tier paragraphs from this file.
